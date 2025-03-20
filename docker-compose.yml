@@ -1,0 +1,19 @@
+services:
+  database:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: administator
+      POSTGRES_PASSWORD: verySecretPassword
+      POSTGRES_DB: todo
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+  app:
+    build: .
+    restart: always
+    environment:
+      SQLALCHEMY_DATABASE_URI: "postgresql://administator:verySecretPassword@database:5432/todo"
+    ports:
+      - "6400:6400"
+    depends_on:
+      - database
